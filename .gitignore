@@ -1,2 +1,5 @@
 # ignore data directory
 data
+
+# ignore snakemake cache
+.snakemake
