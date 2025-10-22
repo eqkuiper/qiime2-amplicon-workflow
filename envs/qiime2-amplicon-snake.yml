@@ -1,0 +1,62 @@
+name: qiime2-amplicon
+channels:
+  - https://packages.qiime2.org/qiime2/2024.10/amplicon/released
+  - conda-forge
+  - bioconda
+  - defaults
+
+dependencies:
+  # Core language/runtime
+  - python
+  - pip
+  - snakemake
+
+  # Core QIIME 2 framework
+  - qiime2=2024.10.*
+  - q2cli
+  - q2templates
+
+  # Amplicon analysis plugins
+  - q2-dada2
+  - mafft
+  - q2-deblur
+  - q2-feature-table
+  - q2-feature-classifier
+  - q2-phylogeny
+  - q2-taxa
+  - q2-diversity
+  - q2-sample-classifier
+  - q2-alignment
+
+  # External bioinformatics tools
+  - blast
+  - bowtie2
+  - cutadapt
+  - vsearch
+  - fasttree
+  - mafft
+  - muscle
+  - hmmer
+  - scikit-bio
+
+  # Visualization & notebooks
+  - matplotlib
+  - seaborn
+  - emperor
+  - pandas
+  - numpy
+  - jupyterlab
+
+  # R support (for phyloseq, vegan, etc.)
+  - r-base
+  - r-tidyverse
+  - bioconductor-phyloseq
+  - r-vegan
+
+  # Optional useful tools
+  - wget
+  - tqdm
+
+  # Ensure correct channel packages
+  - pip:
+      - q2studio
