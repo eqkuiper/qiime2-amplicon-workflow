@@ -8,6 +8,7 @@ channels:
 dependencies:
   # Core language/runtime
   - python
+  - mamba
   - pip
   - snakemake
 
