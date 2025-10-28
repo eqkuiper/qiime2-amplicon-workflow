@@ -1,6 +1,3 @@
-# this was copied directly from 
-# https://raw.githubusercontent.com/qiime2/distributions/dev/2024.10/amplicon/released/qiime2-amplicon-ubuntu-latest-conda.yml
-# on 2025-10-22
 channels:
 - https://packages.qiime2.org/qiime2/2024.10/amplicon/released
 - conda-forge
