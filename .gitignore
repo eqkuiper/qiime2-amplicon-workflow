@@ -3,3 +3,6 @@ data
 
 # ignore snakemake cache
 .snakemake
+
+# ignore scratch work
+scratch_paper.txt
