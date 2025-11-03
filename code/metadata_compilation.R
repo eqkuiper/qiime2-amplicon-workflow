@@ -2,7 +2,7 @@ library(tidyverse)
 library(readxl)
 
 barcode_fp <- "data/metadata/BarcodeMasterList.xlsx"
-metadata_fp <- "data/metadata/osburn10_metadata_eqk.csv"
+metadata_fp <- "data/metadata/osburn10_metadata_eqk_2.csv"
 
 # read in data
 barcodes <- read_xlsx(barcode_fp)
@@ -18,4 +18,4 @@ metadata <- metadata_raw %>%
   left_join(barcodes, by = c("barcode plate", "barcode plate position"))
 
 # save complete metadata file as tsv
-write_tsv(metadata, "data/metadata/Osburn10_eqk.tsv")
+write_tsv(metadata, "data/metadata/Osburn10_eqk_2.tsv")
