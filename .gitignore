@@ -6,3 +6,6 @@ data
 
 # ignore scratch work
 scratch_paper.txt
+
+# ignore repodata.json
+repodata.json
