@@ -9,3 +9,6 @@ scratch_paper.txt
 
 # ignore repodata.json
 repodata.json
+
+# ignore slurm logs
+slurm_logs
