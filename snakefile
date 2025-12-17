@@ -44,7 +44,6 @@ rule import_seqs_as_qza:
         qiime tools import \
         --type MultiplexedPairedEndBarcodeInSequence \
         --input-path data/preformatted_reads \
-        --input-format CasavaOneEightSingleLanePerSampleDirFmt \
         --output-path {output.multiplexed}
         """
 
