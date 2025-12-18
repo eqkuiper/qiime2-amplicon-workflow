@@ -197,7 +197,7 @@ rule metadata_tabulate:
         --o-visualization {output.classification_vis}
         """
 
-rule build tree:
+rule build_tree:
     input:
         seqs="data/qiime2_out/rep-seqs.qza"
     output:
