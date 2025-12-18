@@ -13,8 +13,18 @@ rule all:
         # trim
         trimmed="data/qiime2_out/demux-trimmed-no-untrimmed.qza",
         # trim vis
-        trimmed_vis="data/qiime2_out/demux-trimmed-no-untrimmed.qzv"
-
+        trimmed_vis="data/qiime2_out/demux-trimmed-no-untrimmed.qzv",
+        # denoising 
+        rep_seqs="data/qiime2_out/rep-seqs.qza",
+        table="data/qiime2_out/rep-seqs.qza",
+        denoising="data/qiime2_out/denoising-stats.qza",
+        # classify 
+        classification="data/qiime2_out/taxonomy-GTDBr220.qza",
+        # build tree
+        alignment="data/qiime2_out/rep-seqs-aligned.qza",
+        masked_alignment="data/qiime2_out/rep-seqs-aligned-masked.qza",
+        tree="data/qiime2_out/unrooted-tree.qza",
+        rooted_tree="data/qiime2_out/rooted-tree.qza"
 
 rule preprocessing:
     input: 
@@ -129,5 +139,82 @@ rule trim_vis:
         --i-data {input.trimmed} \
         --o-visualization {output.trimmed_vis}
         """
-        
 
+rule dada2_denoise:
+    input:
+        trimmed="data/qiime2_out/demux-trimmed-no-untrimmed.qza"
+    output:
+        rep_seqs="data/qiime2_out/rep-seqs.qza",
+        table="data/qiime2_out/asv_table.qza",
+        denoising="data/qiime2_out/denoising-stats.qza"
+    shell:
+        """
+        module load python-miniconda3
+        module load qiime2/2024.5-amplicon
+
+        qiime dada2 denoise-paired \
+        --i-demultiplexed-seqs {input.trimmed} \
+        --p-trim-left-f 0 \
+        --p-trim-left-r 0 \
+        --p-trunc-len-f 199 \
+        --p-trunc-len-r 230 \
+        --p-n-reads-learn 1000000 \
+        --o-table {output.table} \
+        --o-representative-sequences {output.rep_seqs} \
+        --o-denoising-stats {output.denoising} \
+        --verbose
+        """
+
+rule classify:
+    input:
+        classifier="/projects/p31618/databases/gtdb220/gtdb_classifier_r220.qza",
+        reads="data/qiime2_out/rep-seqs.qza"
+    output:
+        classification="data/qiime2_out/taxonomy-GTDBr220.qza"
+    shell:
+        """
+        module load python-miniconda3
+        module load qiime2/2024.5-amplicon
+
+        qiime feature-classifier classify-sklearn \
+        --i-classifier {input.classifier} \
+        --i-reads {input.reads} \
+        --o-classification {output.classification}
+        """
+
+rule metadata_tabulate:
+    input:
+        classification="data/qiime2_out/taxonomy-GTDBr220.qza"
+    output:
+        classification_vis="data/qiime2_out/taxonomy-GTDBr220.qzv"
+    shell:
+        """
+        module load python-miniconda3
+        module load qiime2/2024.5-amplicon
+
+        qiime metadata tabulate \
+        --m-input-file {input.classification} \
+        --o-visualization {output.classification_vis}
+        """
+
+rule build tree:
+    input:
+        seqs="data/qiime2_out/rep-seqs.qza"
+    output:
+        alignment="data/qiime2_out/rep-seqs-aligned.qza",
+        masked_alignment="data/qiime2_out/rep-seqs-aligned-masked.qza",
+        tree="data/qiime2_out/unrooted-tree.qza",
+        rooted_tree="data/qiime2_out/rooted-tree.qza"
+    shell:
+        """
+        module load python-miniconda3
+        module load qiime2/2024.5-amplicon
+
+        qiime phylogeny align-to-tree-mafft-fasttree \
+        --i-sequences {input.seqs} \
+        --o-alignment {output.alignment} \
+        --o-masked-alignment {output.masked_alignment} \
+        --o-tree {output.tree} \
+        --o-rooted-tree {output.rooted_tree} \
+        --verbose
+        """
