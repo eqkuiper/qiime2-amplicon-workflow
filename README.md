@@ -31,6 +31,6 @@ slurm-logdir: "/projects/your allocation/project folder/slurm_logs" <- change th
 3) Import your raw reads and metadata into directories under data named raw_reads and metadata, respectively.
 4) Run by typing the following in command line:
 ```
-snakmake --profile profiles --jobs <some number of jobs>
+snakemake --profile profiles --jobs <some number of jobs>
 ```
 The number of jobs corresponds directly to the number of steps (called rules in snakemake) you're running. So if you are running everything straight through you will need as many jobs as there are rules. But if you're just running the last step, you'll need two jobs (one for the last step, the other for rule "all").
